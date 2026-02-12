@@ -1,0 +1,25 @@
+$ht1 = [PSCustomObject]@{
+    Name = "John","Joe","Mary"
+    DaysWorked = 12,20,18
+}
+
+$ht2 = [PSCustomObject]@{
+    Name = "John","Joe","Mary"
+    SalaryPerDay = 100,120,150
+}
+
+$result = @()
+
+for($i=0; $i -lt $ht1.Name.Count; $i++)
+{
+    $salary = $ht1.DaysWorked[$i] * $ht2.SalaryPerDay[$i]
+
+    $temp = [PSCustomObject]@{
+        Name   = $ht1.Name[$i]
+        Salary = $salary
+    }
+
+    $result += $temp
+}
+
+$result
