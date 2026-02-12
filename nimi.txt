@@ -1,0 +1,5 @@
+# Practice 3
+# Esitage küsimus "Mis on teie nimi" ja seejärel kuvage vastus rohelises värvis.
+
+$name = Read-Host "Mis on teie nimi"
+Write-Host "Sinu nimi on: $name" -ForegroundColor Green
