@@ -1,0 +1,16 @@
+Write-Host "I want to learn PowerShell" -ForegroundColor Green
+# Create the first array
+$array1 = @(10, 20, 30, 40, 50)
+
+# Create the second array
+$array2 = @(5, 15, 25, 35, 45)
+
+# Create the third array by summing corresponding elements
+$array3 = for ($i = 0; $i -lt $array1.Length; $i++) {
+    $array1[$i] + $array2[$i]
+}
+
+# Display the results
+Write-Host "Array 1: $array1"
+Write-Host "Array 2: $array2"
+Write-Host "Array 3 (Sum): $array3"
