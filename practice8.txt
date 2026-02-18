@@ -1,0 +1,6 @@
+# Practice 8
+# While Notepad is running -> print message until all are closed
+
+while (Get-Process Notepad -ErrorAction SilentlyContinue) {
+    Write-Host "Notepad is running"
+}
