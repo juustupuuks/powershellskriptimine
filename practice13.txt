@@ -1,0 +1,92 @@
+# Practice 13
+# Area Calculator – menüü + funktsioonid
+
+function MainMenu {
+    Write-Host "`t`t`tArea Calculator" -ForegroundColor Green
+    Write-Host "`n`t`t`tMain Menu" -ForegroundColor Yellow
+    Write-Host "`nPlease select the option to perform the respective task`n" -ForegroundColor Yellow
+
+    Write-Host "1: Area of Square"    -ForegroundColor Green
+    Write-Host "2: Area of Rectangle" -ForegroundColor Green
+    Write-Host "3: Area of Circle"    -ForegroundColor Green
+    Write-Host "4: Area of Triangle"  -ForegroundColor Green
+    Write-Host "5: Exit`n"            -ForegroundColor Green
+
+    $choice = Read-Host "Enter your choice"
+    return $choice
+}
+
+function CheckMenu {
+    Write-Host "`n`nPlease select the next option" -ForegroundColor Yellow
+    Write-Host "`n1: Return to Main Menu" -ForegroundColor Green
+    Write-Host "2: Exit`n"                -ForegroundColor Green
+
+    $ch2 = Read-Host "Enter your choice"
+
+    if ($ch2 -eq "1") {
+        # jätkame do-tsükliga
+        return
+    }
+    elseif ($ch2 -eq "2") {
+        exit
+    }
+    else {
+        Write-Host "`nEnter correct option" -ForegroundColor Red
+        CheckMenu
+    }
+}
+
+function Square {
+    cls
+    Write-Host "`t`t`tArea of Square`n" -ForegroundColor Green
+    [int]$side = Read-Host "Enter the side of the square"
+    $area = $side * $side
+    Write-Host "`nArea of the square : $area" -ForegroundColor Green
+    CheckMenu
+}
+
+function Rectangle {
+    cls
+    Write-Host "`t`tArea of Rectangle`n" -ForegroundColor Green
+    [int]$length  = Read-Host "Enter length of the rectangle"
+    [int]$breadth = Read-Host "Enter breadth of the rectangle"
+    $area = $length * $breadth
+    Write-Host "`nArea of the rectangle : $area" -ForegroundColor Green
+    CheckMenu
+}
+
+function Circle {
+    cls
+    Write-Host "`t`tArea of Circle`n" -ForegroundColor Green
+    [int]$radius = Read-Host "Enter the radius of the circle"
+    $area = 3.14 * $radius * $radius
+    Write-Host "`nArea of the circle : $area" -ForegroundColor Green
+    CheckMenu
+}
+
+function Triangle {
+    cls
+    Write-Host "`t`tArea of Triangle`n" -ForegroundColor Green
+    [int]$height = Read-Host "Enter height of triangle"
+    [int]$base   = Read-Host "Enter base of triangle"
+    $area = 0.5 * $height * $base
+    Write-Host "`nArea of Triangle : $area" -ForegroundColor Green
+    CheckMenu
+}
+
+do {
+    cls
+    $ch1 = MainMenu
+
+    switch ($ch1) {
+        "1" { Square    }
+        "2" { Rectangle }
+        "3" { Circle    }
+        "4" { Triangle  }
+        "5" { break     }
+        default {
+            Write-Host "Invalid choice, please try again." -ForegroundColor Red
+        }
+    }
+
+} while ($ch1 -ne "5")
