@@ -1,0 +1,30 @@
+# Practice 5
+
+###########################################################
+# 1) Leia kahe Notepadi protsessi ProcessName ja Id
+###########################################################
+
+Get-Process |
+    Where-Object { $_.ProcessName -eq "notepad" } |
+    Select-Object ProcessName, Id
+
+
+###########################################################
+# 2) Kaustas C:\Temp\Test – leia CSV-fail ja näita suurust
+###########################################################
+
+# Näita kõik failid kaustas
+Get-ChildItem -Path "C:\Temp\Test"
+
+# Leia CSV-fail
+$file = Get-ChildItem -Path "C:\Temp\Test" |
+        Where-Object { $_.Name -like "*.csv" } |
+        Select-Object Name, Length
+
+# Arvuta suurus KB ja MB
+$sizeInKB = $file.Length / 1KB
+$sizeInMB = $file.Length / 1MB
+
+Write-Host "`nFileName : $($file.Name)"
+Write-Host "Size in KB : $sizeInKB"
+Write-Host "Size in MB : $sizeInMB"
