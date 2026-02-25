@@ -1,0 +1,46 @@
+# Practice 12
+# I osa – funktsioonid ilma parameetriteta
+# II osa – funktsioon parameetriga
+
+########################
+# I – ilma parameetriteta
+########################
+
+function CountStart {
+    $start = Get-Service | Where-Object { $_.Status -eq "Running" }
+    Write-Host "Total services in running state  = $($start.Count)"
+}
+
+function CountStop {
+    $stop = Get-Service | Where-Object { $_.Status -eq "Stopped" }
+    Write-Host "Total services in stopped state = $($stop.Count)"
+}
+
+CountStart
+CountStop
+
+
+########################
+# II – parameetriga funktsioon
+########################
+
+function CountService {
+    param (
+        [string]$Status
+    )
+
+    if ($Status -eq "Running") {
+        $start = Get-Service | Where-Object { $_.Status -eq "Running" }
+        Write-Host "Total services in running state  = $($start.Count)"
+    }
+    elseif ($Status -eq "Stopped") {
+        $stop = Get-Service | Where-Object { $_.Status -eq "Stopped" }
+        Write-Host "Total services in stopped state = $($stop.Count)"
+    }
+    else {
+        Write-Host "Unknown status value: $Status" -ForegroundColor Red
+    }
+}
+
+CountService -Status Running
+CountService -Status Stopped
