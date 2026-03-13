@@ -1,0 +1,19 @@
+# Küsi kasutajalt ees- ja perenimi
+$firstName = Read-Host "Sisesta oma eesnimi"
+$lastName  = Read-Host "Sisesta oma perenimi"
+
+# Loo kasutajanimi ees.perenimi
+$username = ($firstName + "." + $lastName).ToLower()
+
+Write-Host "Kustutav kasutaja on $username"
+
+# Proovi kasutaja kustutada
+Remove-LocalUser -Name $username -ErrorAction SilentlyContinue
+
+# Kontrolli kas käsk õnnestus
+if ($?) {
+    Write-Host "Kasutaja $username on kustutatud"
+}
+else {
+    Write-Host "Tekkinud probleem kasutaja kustutamisega"
+}
