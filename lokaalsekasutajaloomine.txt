@@ -1,0 +1,49 @@
+# Ise_kasutaja_loomine_ees_perenimi.ps1
+
+# Küsi kasutajalt ees- ja perenimi
+$Eesnimi = Read-Host "Sisesta oma eesnimi"
+$Perenimi = Read-Host "Sisesta oma perenimi"
+
+# Kontrolli, et nimed pole tühjad
+if ([string]::IsNullOrWhiteSpace($Eesnimi) -or [string]::IsNullOrWhiteSpace($Perenimi)) {
+    Write-Host "Viga: Eesnimi ja perenimi ei tohi olla tühjad!" -ForegroundColor Red
+    exit 1
+}
+
+# Loo kasutajanimi (ees.perenimi) ja muuda väikesteks tähtedeks
+$KasutajaNimi = ($Eesnimi + "." + $Perenimi).ToLower()
+$TaisNimi = $Eesnimi + " " + $Perenimi
+
+Write-Host "Loodav kasutaja on $KasutajaNimi"
+
+# Määra parool (Turvalisuse huvides teisendatakse turvaliseks stringiks)
+$KasutajaParool = ConvertTo-SecureString "Parool!!" -AsPlainText -Force
+
+# Proovi kasutajat luua veakäsitlusega
+try {
+    # Peida veateated -ErrorAction SilentlyContinue abil
+    $ErrorActionPreference = "SilentlyContinue"
+    
+    # Proovi kasutajat luua
+    New-LocalUser -Name $KasutajaNimi -Password $KasutajaParool -FullName $TaisNimi -ErrorAction Stop
+    
+    # Taasta vaikimisi veakäsitlus
+    $ErrorActionPreference = "Continue"
+    
+    # Kontrolli, kas kasutaja loomine õnnestus (alternatiivne meetod $? abil)
+    if ($?) {
+        Write-Host "Kasutaja $KasutajaNimi on edukalt loodud!" -ForegroundColor Green
+    } else {
+        Write-Host "Tekkinud probleem kasutaja loomisega" -ForegroundColor Red
+    }
+}
+catch {
+    # Taasta vaikimisi veakäsitlus
+    $ErrorActionPreference = "Continue"
+    
+    # Kuvada ainult üldine veateade, mitte süsteemi veateadet
+    Write-Host "Tekkinud probleem kasutaja loomisega" -ForegroundColor Red
+    
+    # Lisa täpsem veateade ainult soovi korral (kommenteeritud välja)
+    # Write-Host "Täpsem viga: $_" -ForegroundColor DarkRed
+}
