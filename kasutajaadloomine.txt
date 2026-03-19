@@ -1,0 +1,55 @@
+# create_ad_users.ps1
+
+$UserList = @(
+    "Mari Maasikas",
+    "Jaan Jõesaar", 
+    "Kadri Kask",
+    "Peeter Pärn",
+    "Liisa Lill",
+    "Andres Ader",
+    "Tiina Tamm",
+    "Mart Mets",
+    "Anne Aas",
+    "Toomas Tuul"
+)
+
+$Domain = "kontor.local"
+
+foreach ($User in $UserList) {
+    $Nimed = $User -split ' '
+    $Eesnimi = $Nimed[0]
+    $Perenimi = $Nimed[1]
+    
+    $KasutajaNimi = ($Eesnimi + "." + $Perenimi).ToLower()
+    
+    try {
+        $Kasutaja = Get-ADUser -Filter "SamAccountName -eq '$KasutajaNimi'" -ErrorAction Stop
+        Write-Host "User $KasutajaNimi already exists - can not add this users" -ForegroundColor Yellow
+    }
+    catch {
+        try {
+            $Parool = ConvertTo-SecureString "Parool!!" -AsPlainText -Force
+            
+            New-ADUser -Name "$Eesnimi $Perenimi" `
+                      -GivenName $Eesnimi `
+                      -Surname $Perenimi `
+                      -SamAccountName $KasutajaNimi `
+                      -UserPrincipalName "$KasutajaNimi@$Domain" `
+                      -AccountPassword $Parool `
+                      -Enabled $true `
+                      -PassThru `
+                      -ErrorAction Stop
+            
+            if ($?) {
+                Write-Host "New user $KasutajaNimi added succesfully" -ForegroundColor Green
+            } else {
+                Write-Host "Failed to create user $KasutajaNimi" -ForegroundColor Red
+            }
+        }
+        catch {
+            Write-Host "Error creating user $KasutajaNimi : $_" -ForegroundColor Red
+        }
+    }
+}
+
+Write-Host "`nKasutajate loomise protsess lõpetatud!" -ForegroundColor Cyan
